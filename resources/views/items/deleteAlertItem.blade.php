@@ -1,8 +1,8 @@
 @extends('template')
 @section('content')
-<div class="container">
+<div class="container vh-100 d-flex justify-content-center align-items-center">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 text-center">
             <h1>Eliminar Item</h1>
             <p>¿Estás seguro de que deseas eliminar el ítem {{$item->itemName}}?</p>
             <form action="{{ route('items.destroy', $item->id) }}" method="POST">
@@ -15,3 +15,4 @@
     </div>
 </div>
 @endsection
+

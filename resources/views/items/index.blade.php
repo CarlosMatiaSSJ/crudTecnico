@@ -5,9 +5,17 @@
     <div class="col-md-12">
         <h1 class="text-center p-2">Items Registrados</h1>
         <div class="row">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center mb-1">
                 <a href="{{ route('items.create') }}" class="btn btn-primary btn-lg">Agregar nuevo Item</a>
             </div>
+
+            {{-- Search Filter --}}
+            <form action="{{ route('items.index') }}" method="GET" class="col-md-text-center p-5">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Buscar por descripción">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </form>            
         </div>
         <div class="table-responsive p-5">
             <table class="table table-striped">
@@ -26,7 +34,7 @@
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->itemName }}</td>
                         <td>{{ $item->itemDescription }}</td>
-                        <td>{{ $item->itemPrice }}</td>
+                        <td>$   {{ $item->itemPrice }}</td>
 
                         <td>
                             <a href="{{route('items.edit', $item->id)}}" class="btn btn-warning">Editar</a>                       
@@ -37,6 +45,7 @@
                     @endforeach
                 </tbody>
             </table>
+                    
         </div>
     </div>
 </div>

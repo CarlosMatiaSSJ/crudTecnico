@@ -10,9 +10,18 @@ class ItemsController extends Controller
     /**
      * Display a listing of the items.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::all();
+        $search = $request->input('search');
+
+        $items = Item::query();
+
+        if ($search) {
+            $items->where('itemDescription', 'like', '%' . $search . '%');
+        }
+
+        $items = $items->paginate(10);
+
         return view('items.index', compact('items'));
     }
 
@@ -22,7 +31,6 @@ class ItemsController extends Controller
     public function create()
     {
         return view('items.createFormItem');
-
     }
 
     /**
@@ -45,12 +53,11 @@ class ItemsController extends Controller
             'itemDescription' => 'required|string',
             'itemPrice' => 'required|numeric',
         ]);
-    
+
         $item = Item::create($validatedData);
-    
+
         return redirect()->route('items.index')->with('success', 'Se ha creado exitosamente el Item');
     }
-    
 
     /**
      * Display the item to delete.
@@ -58,7 +65,6 @@ class ItemsController extends Controller
     public function show(Item $item)
     {
         return view('items.deleteAlertItem', compact('item'));
-
     }
 
     /**
@@ -80,7 +86,11 @@ class ItemsController extends Controller
                 'string',
                 'max:255',
                 function ($attribute, $value, $fail) use ($item) {
-                    if (Item::where('itemName', $value)->where('id', '!=', $item->id)->exists()) {
+                    if (
+                        Item::where('itemName', $value)
+                            ->where('id', '!=', $item->id)
+                            ->exists()
+                    ) {
                         $fail('El nombre del Item ya existe, intenta con otro nombre.');
                     }
                 },
@@ -89,7 +99,7 @@ class ItemsController extends Controller
             'itemPrice' => 'required|numeric',
         ]);
 
-        $item-> update($validatedData);
+        $item->update($validatedData);
         return redirect()->route('items.index')->with('update', 'El ítem ha sido actualizado exitosamente!');
     }
 
