@@ -43,7 +43,6 @@ class ItemsController extends Controller
                 'required',
                 'string',
                 'max:255',
-                //Validamos que no exista el Item
                 function ($attribute, $value, $fail) {
                     if (Item::where('itemName', $value)->exists()) {
                         $fail('El nombre del Item ya existe, intenta con otro nombre.');
@@ -56,7 +55,7 @@ class ItemsController extends Controller
 
         $item = Item::create($validatedData);
 
-        return redirect()->route('items.index')->with('success', 'Se ha creado exitosamente el Item');
+        return redirect()->route('items.index')->with('Success', 'Se ha creado exitosamente el Item');
     }
 
     /**
